@@ -4,7 +4,12 @@
 import argparse
 import sys
 import getpass
-from nebpyclient import NebPyClient
+try:
+    from nebpyclient import NebPyClient
+    print("Using NewPyClient")
+except ModuleNotFoundError as err:
+    # Error handling
+    print("Error finding NeyPyClient.  Try 'pip install nebpyclient'")      
 ### command line arguments
 
 parser = argparse.ArgumentParser()
@@ -38,9 +43,13 @@ client = NebPyClient(username, password)
 
 vol_list = client.get_volumes()
 #print("uuid, lun_id, spu_serial, volume_uuid")
+match = 0
 for vol in vol_list.items:
     if vol.name == sourcevol:
         print(f"Found matching source volume {sourcevol} , cloning to {destvol}")
+        match = match + 1
         clonevolume(vol.uuid,destvol)
-        
+
+if match == 0:
+    print(f"Source volume {sourcevol} not found")
 
