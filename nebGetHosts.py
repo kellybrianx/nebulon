@@ -43,6 +43,6 @@ def getnpodname(uuid):
              return(npod.name)
                 
 host_list = client.get_hosts()
-print(f"host.name, host.board_serial, host.spu_serials, npod_name,")
+print(f"host.name, host.uuid host.board_serial, host.spu_serials, npod_name,")
 for host in host_list.items:
-    print(f"{host.name}, {host.board_serial}, {host.spu_serials}, " + getnpodname({host.npod_uuid}))
+    print(f"{host.name}, {host.uuid}, {host.board_serial}, {host.spu_serials}, " + getnpodname({host.npod_uuid}))
