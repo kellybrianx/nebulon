@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""List hosts and Serial info for SPU's"""
+"""List host, Serial, npod name info for SPU's"""
 ### usage: ./nebGetHosts.py -u myuser
 import argparse
 import sys
@@ -35,7 +35,14 @@ except ModuleNotFoundError as err:
 
 client = NebPyClient(username, password)
 
+def getnpodname(uuid):
+    npod_list = client.get_npods()
+    for npod in npod_list.items:
+        #print(f"npod name: {npod.name}, {npod.uuid}")
+         if {npod.uuid} == uuid:
+             return(npod.name)
+                
 host_list = client.get_hosts()
-print(f"host.name, host.board_serial, host.spu_serials")
+print(f"host.name, host.board_serial, host.spu_serials, npod_name,")
 for host in host_list.items:
-    print(f"{host.name}, {host.board_serial}, {host.spu_serials}")
+    print(f"{host.name}, {host.board_serial}, {host.spu_serials}, " + getnpodname({host.npod_uuid}))
